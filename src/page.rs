@@ -229,11 +229,30 @@ impl FromData for Page {
                     },
                     "adds" => {
                         let de = URI::percent_decode(val.as_bytes());
+                        let dstr: String = match de {
+                            Ok(d2) => d2.to_string().replace("+", " "),
+                            _ => "".to_string(),
+                        };
+                        println!("Decoded string:\n{}", dstr);
                         let mut tlen: usize = 0;
-                        match de {
-                            Ok(d) => {
-                                let dec = d.to_string();
-                                let t = ColorHsl::read_json_str(&dec);
+                        if dstr.starts_with("[{") && dstr.ends_with("}]") {
+                            // parse as json
+                            /*match de {
+                                Ok(d) => {
+                                    let dec = d.to_string();
+                                    let t = ColorHsl::read_json_str(&dec);
+                                    adds = match t.len() {
+                                        0 => None,
+                                        l => {
+                                                tlen = l;
+                                                Some(t)
+                                            },
+                                    };
+                                }
+                                _ => {},
+                            }*/
+                            if dstr != "" {
+                                let t = ColorHsl::read_json_str(&dstr);
                                 adds = match t.len() {
                                     0 => None,
                                     l => {
@@ -242,12 +261,28 @@ impl FromData for Page {
                                         },
                                 };
                             }
-                            _ => {},
-                        }
-                        if adds.is_some() {
-                            println!("Set adds to {} items", tlen);
+                            if adds.is_some() {
+                                println!("Set adds to {} items", tlen);
+                            } else {
+                                println!("Set adds to None");
+                            }
+                        } else if dstr.contains(',') {
+                            // parse as list of comma separated hex codes
+                            let mut alist: Vec<ColorHsl> = Vec::new();
+                            for col in dstr.split(',') {
+                                let co = col.trim();
+                                match ColorHsl::from_hex(co, co) {
+                                    Some(c) => alist.push(c),
+                                    _ => {},
+                                }
+                            }
+                            adds = Some(alist);
                         } else {
-                            println!("Set adds to None");
+                            // try parsing as a single hex code
+                            let tad = ColorHsl::from_hex(&dstr, &dstr);
+                            if let Some(ta) = tad {
+                                adds = Some(vec![ta]);
+                            }
                         }
                     },
                     // To be implemented later to upload color files
