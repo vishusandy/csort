@@ -194,7 +194,7 @@ pub fn form(ops: &Page) -> String {
     
     
     format!(r###"
-      <form method="post" action="localhost:8000" class="sticky-top">
+      <form method="post" action="http://localhost:8000/" class="sticky-top">
         <div class="row v-form">
           <div class="col-md-3">
             <!-- <input type="text" class="form-control" placeholder=""> -->

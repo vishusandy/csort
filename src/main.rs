@@ -90,5 +90,5 @@ fn findex(params: Page) -> Html {
 
 
 fn main() {
-    rocket::ignite().mount("/", routes![index, files]).launch();
+    rocket::ignite().mount("/", routes![index, files, findex]).launch();
 }
