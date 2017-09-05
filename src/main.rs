@@ -23,12 +23,16 @@ mod page;
 use page::*;
 use colorhsl::*;
 
+use rocket::response::content;
+
+type Html = content::Html<String>;
+
 fn sort_list(v: &Vec<ColorHsl>) -> Vec<ColorHsl> {
     Vec::new()
 }
 
 #[get("/")]
-fn index() -> String {
+fn index() -> Html {
     let params = Page::default();
     let mut output = String::new();
     let list: Vec<ColorHsl> = vec![
@@ -48,11 +52,12 @@ fn index() -> String {
     output.push_str(&form(&params));
     output.push_str(&body(&list));
     output.push_str(&footer());
-    output
+
+    content::Html(output)
 }
 
 #[post("/", data = "<params>")]
-fn findex(params: Page) -> String {
+fn findex(params: Page) -> Html {
     let mut output = String::new();
     let list: Vec<ColorHsl> = vec![
         ColorHsl::from_hex("#65d1fa", "#65d1fa").unwrap(),
@@ -71,13 +76,11 @@ fn findex(params: Page) -> String {
     output.push_str(&form(&params));
     output.push_str(&body(&list));
     output.push_str(&footer());
-    output
+
+    content::Html(output)
 }
 
 
 fn main() {
-    // println!("Hello, world!");
-    // rocket::ignite().mount("/", routes![findex, index]).launch();
-    
     rocket::ignite().mount("/", routes![index]).launch();
 }
