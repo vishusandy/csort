@@ -1,0 +1,2121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <script src="js-head.js"></script>
+    <script src="jss.min.js"></script>
+    <style>
+    .v-main {
+      margin: auto;
+      /* margin-top: 4em; */
+      padding: auto;
+      width: 90%;
+      
+    }
+    .v-container {
+      border: 1px solid rgba(0,0,0,.125);
+      border-radius: .25rem;
+      padding: .5em;
+      margin: 5px;
+      width: 100%;
+    }
+    .v-form {
+      padding: 1em;
+      background-color: #fff;
+    }
+    .v-container:hover {
+      border-color: #65c3fa;
+      /* border-color: #0056b3; */
+      background-color: #fafafa;
+    }
+    .v-colorbox {
+      height: 4em;
+      width: 2em;
+      border: 1px solid #666;
+      border-radius: 6px;
+    }
+    .v-cont {
+      /* width: 200px; */
+      /* width: 100%; */
+      border: 2px solid rgba(0,0,0,.125);
+      border-radius: .5rem;
+      padding: 4px;
+      margin: .5em;
+    }
+    .v-cont:hover {
+      border-color: #65c3fa;
+      background-color: #fafafa!important;
+      color: #000!important;
+    }
+    .v-collection {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+    .v-topbox {
+      display: flex;
+      flex-direction: row;
+    }
+    .v-leftbox {
+      /* display: flex; */
+    }
+    .v-rightbox {
+      display: flex;
+      flex-direction: column;
+      margin-left: .5em;
+    }
+    .v-innerbox {
+      display: flex;
+    }
+    .v-table-hex, .v-table-rgb, .v-table-hsl {
+      font-size: 75%;
+    }
+    .v-table-hex:hover, .v-table-rgb:hover, .v-table-hsl:hover {
+    /* .v-table-hex:hover, .v-table-rgb:hover, .v-table-hsl:hover { */
+      /* background: #e4e4e4; */
+      /* color: #808080; */
+    }
+    
+    /*
+    body {
+      background-image: -webkit-linear-gradient(left top, rgba(0,0,0,0.1) 25%,rgba(0,0,0,0) 25%,rgba(0,0,0,0) 50%,rgba(0,0,0,0.1) 50%,rgba(0,0,0,0.1) 75%,rgba(0,0,0,0) 75%,rgba(0,0,0,0))
+    }
+    */
+    
+    </style>
+  </head>
+  <body>
+  <!--
+  <i class="fa fa-filter" aria-hidden="true"></i>
+  
+  
+  -->
+    <div class="v-main">
+      <br>
+<!-- ---------- -->
+      <form method="post" class="sticky-top">
+        <div class="row v-form">
+          <div class="col-md-3">
+            <!-- <input type="text" class="form-control" placeholder=""> -->
+            <div class="input-group">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Add Color" aria-label="Add Color">
+                <span class="input-group-btn">
+                  <button class="btn btn-secondary" type="button">
+                    <i class="fa fa-tint" aria-hidden="true"></i>
+                  </button>
+                </span>
+              </div>
+              <!--
+              <input type="text" class="form-control" placeholder="Color" aria-label="HexColor" aria-describedby="basic-addon1">
+              <span class="input-group-addon" id="basic-addon1">
+                <i class="fa fa-tint" aria-hidden="true"></i>
+              </span>
+              -->
+            </div>
+          </div>
+          <div class="col">
+            <div class="input-group">
+              <input type="text" name="hmin" class="form-control" placeholder="Hue Min" aria-label="HueMin">
+              <input type="text" name="smin" class="form-control" placeholder="Saturation Min" aria-label="SatMin">
+              <input type="text" name="lmin" class="form-control" placeholder="Lightness Min" aria-label="LumMin">
+            </div>
+            <div class="input-group">
+              <input type="text" name="hmax" class="form-control" placeholder="Hue Max" aria-label="HueMax">
+              <input type="text" name="smax" class="form-control" placeholder="Saturation Max" aria-label="SatMax">
+              <input type="text" name="lmax" class="form-control" placeholder="Lightness Max" aria-label="LumMax">
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon1">
+                <i class="fa fa-filter" aria-hidden="true"></i>
+              </span>
+              <select name="sort" id="SortBy" class="custom-select" style="width: 100%">
+                <option selected>Sort By...</option>
+                <option value="hsl">HSL</option>
+                <option value="hls">HLS</option>
+                <option value="lsh">LSH</option>
+                <option value="lhs">LHS</option>
+                <option value="slh">SLH</option>
+                <option value="shl">SHL</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon1">
+                <i class="fa fa-table" aria-hidden="true"></i>
+              </span>
+              <select name="layout" id="Layout" class="custom-select" onchange="set_layout()" style="width: 100%">
+                <!-- <option selected value="Grid">Layout</option> -->
+                <option value="Grid">Grid</option>
+                <option value="Table">List</option>
+                <option value="DoubleTable">Double List</option>
+              </select>
+            </div>
+            <div class="">
+            <div class="row">
+              <div class="col col-lg-5">
+                <button type="button" class="btn">
+                  <i class="fa fa-refresh" aria-hidden="true"></i>
+                </button>&nbsp;
+              </div>
+              <div class="col-md-auto">
+              </div>
+              <div class="col col-lg-5">
+                <button type="submit" class="btn">Submit</button>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </form>
+      <br>
+      
+      <div class="v-collection">
+<!-- ---------- -->
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        
+        
+        
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="v-cont">
+          <div class="v-topbox" data-clipboard-text="#33bdff">
+            <div class="v-leftbox">
+            <!-- <div class="col v-box"> -->
+              <div class="v-colorbox"></div>
+            </div>
+            <!-- <div class="col v-right"> -->
+            <div class="v-rightbox">
+              <div class=""><div class="v-table-hex">#33bdff</div></div>
+              <div class=""><div class="v-table-rgb" data-clipboard-text="051, 189, 255">051, 189, 255</div></div>
+              <div class=""><div class="v-table-hsl" data-clipboard-text="105, 0.15487, 0.75674">05, 15.487%, 75.674%</div></div>
+            </div>
+          </div>
+        </div>
+<!-- ---------- -->
+      </div>
+      <br>
+      <br>
+      <br>
+      <br>
+      
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var clipboard = new Clipboard('.v-topbox');
+      var clipboard2 = new Clipboard('.v-table-rgb');
+      var clipboard3 = new Clipboard('.v-table-hsl');
+        clipboard.on('success', function(e) {
+            console.log(e);
+        });
+        clipboard.on('error', function(e) {
+            console.log(e);
+        });
+        clipboard2.on('success', function(e) {
+            console.log(e);
+        });
+        clipboard2.on('error', function(e) {
+            console.log(e);
+        });
+        clipboard3.on('success', function(e) {
+            console.log(e);
+        });
+        clipboard3.on('error', function(e) {
+            console.log(e);
+        });
+        x = getElementsByClassName('v-colorbox');
+        for(i=0;i<x.length;i++) {
+          var colr = x[i].parentNode.parentNode.dataset.clipboardText;
+          x[i].style.backgroundColor = colr;
+          x[i].parentNode.parentNode.parentNode.style.borderColor = colr;
+          var darkcolr = calcopacity(colr, "#000000", .75);
+          x[i].parentNode.parentNode.parentNode.style.borderColor = colr;
+          x[i].parentNode.parentNode.parentNode.style.backgroundColor = darkcolr;
+          if(isLight(darkcolr, 130.5)) {
+            x[i].parentNode.parentNode.parentNode.style.color = "#161616";
+          } else {
+            x[i].parentNode.parentNode.parentNode.style.color = "#f9f9f9";
+          }
+        }
+        
+        function set_layout() {
+          var layout = document.getElementById('Layout').value;
+          if (layout == "Table") {
+            var cur = jss.getAll('.v-cont');
+            cur.width = "100%";
+            jss.set('.v-cont', cur);
+          } else if (layout == "Grid") {
+            var cur = jss.getAll('.v-cont');
+            cur.width = "";
+            jss.set('.v-cont', cur);
+          } else if (layout == "DoubleTable") {
+            var cur = jss.getAll('.v-cont');
+            cur.width = "45%";
+            jss.set('.v-cont', cur);
+          }
+        }
+        /*
+        x = getElementsByClassName('colors');
+        for(i=0;i<x.length;i++){
+            var colr = x[i].innerHTML;
+            var hex = x[i].parentNode.children[3].innerHTML;
+            x[i].parentNode.children[0].style.backgroundColor = "rgb(" + colr + ")";
+            x[i].parentNode.children[0].title = colr;
+            var darkcolr = calcopacity(hex, "#000000", 0.8);
+            x[i].parentNode.style.backgroundColor = darkcolr;
+            if(isLight(darkcolr, 127.5)) {
+                // x[i].parentNode.children[1].innerHTML = "Light : " + x[i].parentNode.children[1].innerHTML;
+                x[i].parentNode.style.color = "#161616";
+            } else {
+                // x[i].parentNode.children[1].innerHTML = "Dark : " + x[i].parentNode.children[1].innerHTML;
+                x[i].parentNode.style.color = "#f9f9f9";
+            }
+        }*/
+      
+    </script>
+  </body>
+</html>
