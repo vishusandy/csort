@@ -23,12 +23,20 @@ mod page;
 use page::*;
 use colorhsl::*;
 
+use std::io;
+use std::path::{Path, PathBuf};
 use rocket::response::content;
+use rocket::response::NamedFile;
 
 type Html = content::Html<String>;
 
 fn sort_list(v: &Vec<ColorHsl>) -> Vec<ColorHsl> {
     Vec::new()
+}
+
+#[get("/<file..>")]
+fn files(file: PathBuf) -> Option<NamedFile> {
+    NamedFile::open(Path::new("static/").join(file)).ok()
 }
 
 #[get("/")]
@@ -82,5 +90,5 @@ fn findex(params: Page) -> Html {
 
 
 fn main() {
-    rocket::ignite().mount("/", routes![index]).launch();
+    rocket::ignite().mount("/", routes![index, files]).launch();
 }

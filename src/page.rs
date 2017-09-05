@@ -291,7 +291,7 @@ pub fn color_template(c: &ColorHsl) -> String {
             <div class=\"v-rightbox\">
               <div class=\"\"><div class=\"v-table-hex\">{hex}</div></div>
               <div class=\"\"><div class=\"v-table-rgb\" data-clipboard-text=\"{red}, {green}, {blue}\">{red}, {green}, {blue}</div></div>
-              <div class=\"\"><div class=\"v-table-hsl\" data-clipboard-text=\"{hue:.4}, {sat:.4}, {lum:.4}\">{hue:.4}, {sat:.4}, {lum.4}</div></div>
+              <div class=\"\"><div class=\"v-table-hsl\" data-clipboard-text=\"{hue:.4}, {sat:.4}, {lum:.4}\">{hue:.4}, {sat:.4}, {lum:.4}</div></div>
             </div>
           </div>
         </div>
