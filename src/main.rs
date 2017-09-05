@@ -67,7 +67,8 @@ fn index() -> Html {
 #[post("/", data = "<params>")]
 fn findex(params: Page) -> Html {
     let mut output = String::new();
-    let list: Vec<ColorHsl> = vec![
+    
+    let mut list: Vec<ColorHsl> = vec![
         ColorHsl::from_hex("#65d1fa", "#65d1fa").unwrap(),
         ColorHsl::from_hex("#ad5bff", "#ad5bff").unwrap(),
         ColorHsl::from_hex("#fc66d2", "#fc66d2").unwrap(),
@@ -80,6 +81,28 @@ fn findex(params: Page) -> Html {
         ColorHsl::from_hex("#65faf4", "#65faf4").unwrap(),
         ColorHsl::from_hex("#0b6aff", "#0b6aff").unwrap(),
     ];
+    // if let Some(addcolr) = params.add {
+        // list.push(addcolr);
+    
+    
+    let po = params.to_owned();
+    if po.add.is_some() {
+        list.push(po.add.unwrap());
+        // let newadd = (&params).add.unwrap().clone();
+        // list.push(newadd);
+    }
+    if po.adds.is_some() {
+        list.extend_from_slice(po.adds.unwrap().as_slice());
+    }
+        
+    // if pc.add.is_some() {
+    //     let orig 
+    //     let Some(pc) = params.add;
+    //     list.push(pc);
+    // }
+    
+    // TODO: Sort by specified sort method
+    
     output.push_str(&header());
     output.push_str(&form(&params));
     output.push_str(&body(&list));

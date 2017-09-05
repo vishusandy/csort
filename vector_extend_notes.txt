@@ -1,0 +1,12 @@
+extend_from_slice
+  inserts all elements from argument array to self
+
+as_slice
+  extracts a slice containing the entire vector, basically &v[..]
+
+extend
+https://doc.rust-lang.org/std/iter/trait.Extend.html#tymethod.extend
+
+replace each element with a corresponding element:
+clone_from_slice
+copy_from_slice

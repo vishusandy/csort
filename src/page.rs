@@ -2,6 +2,7 @@
 use std::io::{Cursor, Read};
 use rocket::{Request, Data, Outcome};
 use rocket::data::{self, FromData};
+use rocket::http::uri::URI;
 use multipart::server::Multipart;
 use rocket::request::FromParam;
 use rocket::http::RawStr;
@@ -49,6 +50,17 @@ impl Layout {
     } 
 }
 
+impl Clone for Layout {
+    fn clone(&self) -> Layout {
+        match *self {
+            Layout::Grid => Layout::Grid,
+            Layout::Table => Layout::Table,
+            Layout::DoubleTable => Layout::DoubleTable,
+            Layout::Error => Layout::Error, 
+        }
+    }
+}
+
 impl FromStr for Layout {
     type Err = ();
     fn from_str(s: &str) -> Result<Layout, Self::Err> {
@@ -68,6 +80,21 @@ pub enum SortMethod {
     Slh,
     Shl,
     Error,
+}
+
+
+impl Clone for SortMethod {
+    fn clone(&self) -> SortMethod {
+        match *self {
+            SortMethod::Error => SortMethod::Error, 
+            SortMethod::Hsl => SortMethod::Hsl,
+            SortMethod::Hls => SortMethod::Hls,
+            SortMethod::Lsh => SortMethod::Lsh,
+            SortMethod::Lhs => SortMethod::Lhs,
+            SortMethod::Slh => SortMethod::Slh,
+            SortMethod::Shl => SortMethod::Shl,
+        }
+    }
 }
 
 pub const DEFAULT_SORT: SortMethod = SortMethod::Hls;
@@ -112,7 +139,21 @@ impl FromStr for SortMethod {
 pub struct Page {
     pub sort: SortMethod,
     pub layout: Layout,
+    pub add: Option<ColorHsl>,
+    pub adds: Option<Vec<ColorHsl>>,
     
+    
+}
+
+impl Clone for Page {
+    fn clone(&self) -> Page {
+        Page {
+            sort: self.sort.clone(),
+            layout: self.layout.clone(),
+            add: self.add.clone(),
+            adds: self.adds.clone(),
+        }
+    }
 }
 
 impl Page {
@@ -120,6 +161,8 @@ impl Page {
         Page {
             sort: DEFAULT_SORT,
             layout: DEFAULT_LAYOUT,
+            add: None,
+            adds: None,
         }
     }
 }
@@ -128,18 +171,6 @@ impl FromData for Page {
     type Error = ();
     
     fn from_data(request: &Request, data: Data) -> data::Outcome<Self, Self::Error> {
-        // boring setup variables
-        
-        /*
-        let contype = request.headers().get_one("Content-Type").expect("No content type specified.");
-        let cidx = contype.find("boundary=").unwrap_or(0);
-        let boundary = &contype[(cidx + "boundary=".len())..];
-        let mut dat = Vec::new();
-        data.stream_to(&mut dat).expect("Could not read data stream");
-        println!(" --- Content type: {:?}", contype);
-        println!(" --- Dat: {:#?}", dat);
-        let mut parts = Multipart::with_body(Cursor::new(dat), boundary);
-        */
         
         let mut dat = Vec::new();
         match data.stream_to(&mut dat) {
@@ -153,48 +184,71 @@ impl FromData for Page {
         }
         let fdata = str::from_utf8(&dat).unwrap_or("");
         println!("{:?}", fdata);
-        // the potatoes
-        // let mut sort: Option<SortMethod> = None;
-        // let mut layout: Option<Layout> = None;
         let mut sort = DEFAULT_SORT;
         let mut layout = DEFAULT_LAYOUT;
-        
-        // parts.foreach_entry(|mut entry| {
-            // match entry.name.to_lowercase().as_str() {
-        
-        // let re = Regex::new("&").unwrap();
-        // let re = Regex::new("=").unwrap();
-        // for part in re.split(fdata) {
+        let mut add = None;
+        let mut adds = None;
+
         let parts: Vec<&str> = fdata.split('&').collect();
         
         for part in parts {
-            // if part.contains("=") && !part.ends_with("=") {
             if part != "" && !part.ends_with('=') {
-                // let pos = part.find('=').unwrap_or(0);
-                // let (key, val) = part.split_at(pos);
-                
                 let pieces: Vec<&str> = part.splitn(2, '=').collect();
                 if pieces.len() != 2 { continue; }
                 let key = pieces[0];
                 let val = pieces[1];
-                // match part.find('=') {
-                //     Some
-                // }
                 
                 
                 match key {
                     "sort" => {
-                        // let t = entry.data.as_text().unwrap_or("");
-                        // sort = Some(t.into());
-                        // sort = SortMethod::create(t);
                         sort = SortMethod::create(val);
                         println!("Set Sort to {:?}", sort);
                     },
                     "layout" => {
-                        // let t = entry.data.as_text().unwrap_or("");
-                        // layout = Layout::create(t);
                         layout = Layout::create(val);
                         println!("Set Layout to {:?}", layout);
+                    },
+                    "add" => { 
+                        let de = URI::percent_decode(val.as_bytes());
+                        match de {
+                            Ok(d) => {
+                                let dec = d.to_string();
+                                add = ColorHsl::from_hex(&dec, &dec); 
+                                let atmp = ColorHsl::from_hex(&dec, &dec); 
+                                if let Some(a) = atmp {
+                                    println!("Set add to {}", a.hex);
+                                }
+                            },
+                            _ => { println!("Could not decode string: `{}`", val); },
+                        }
+                        // add = ColorHsl::from_hex(val, val); 
+                        // let atmp = ColorHsl::from_hex(val, val); 
+                        // if let Some(a) = atmp {
+                        //     println!("Set add to {}", a.hex);
+                        // }
+                    },
+                    "adds" => {
+                        let de = URI::percent_decode(val.as_bytes());
+                        let mut tlen: usize = 0;
+                        match de {
+                            Ok(d) => {
+                                let dec = d.to_string();
+                                let t = ColorHsl::read_json_str(&dec);
+                                adds = match t.len() {
+                                    0 => None,
+                                    l => {
+                                            tlen = l;
+                                            Some(t)
+                                        },
+                                };
+                            }
+                            _ => {},
+                        }
+                        if adds.is_some() {
+                            println!("Set adds to {} items", tlen);
+                        } else {
+                            println!("Set adds to None");
+                        }
                     },
                     // To be implemented later to upload color files
                     // "file" => {
@@ -207,12 +261,12 @@ impl FromData for Page {
                 }
             }
         }
-        // }).expect("Failed to iterate parts.");
         
         let o = Page {
             sort,
             layout,
-            
+            add,
+            adds,
         };
         
         Outcome::Success(o)
@@ -228,7 +282,6 @@ pub fn header() -> String {
 pub fn form(ops: &Page) -> String {
     // let form =include_str!("template_form.html");
     // form.to_string()
-    // let selhsl = if ops.Sort == SortMethod::Hsl { "selected" } else { "" };
     let selhsl = match ops.sort { SortMethod::Hsl => "selected", _ =>  "" };
     let selhls = match ops.sort { SortMethod::Hls => "selected", _ =>  "" };
     let sellsh = match ops.sort { SortMethod::Lsh => "selected", _ =>  "" };
@@ -236,7 +289,6 @@ pub fn form(ops: &Page) -> String {
     let selslh = match ops.sort { SortMethod::Slh => "selected", _ =>  "" };
     let selshl = match ops.sort { SortMethod::Shl => "selected", _ =>  "" };
     
-    // let selgrid = if ops.Layout == Layout::Grid { "selected" } else { "" };
     let selgrid = match ops.layout { Layout::Grid => "selected", _ =>  "" };
     let seltable = match ops.layout { Layout::Table => "selected", _ =>  "" };
     let seldoubletable = match ops.layout { Layout::DoubleTable => "selected", _ =>  "" };
@@ -249,19 +301,19 @@ pub fn form(ops: &Page) -> String {
             <!-- <input type="text" class="form-control" placeholder=""> -->
             <div class="input-group">
               <div class="input-group">
-                <input type="text" class="form-control" placeholder="Add Color" aria-label="Add Color">
+                <input type="text" name="add" class="form-control" placeholder="Add Color" aria-label="Add Color">
                 <span class="input-group-btn">
                   <button class="btn btn-secondary" type="button">
                     <i class="fa fa-tint" aria-hidden="true"></i>
                   </button>
                 </span>
+                <input type="text" name="adds" class="form-control" placeholder="Add Color" aria-label="Add Color">
+                <span class="input-group-btn">
+                  <button class="btn btn-secondary" type="button">
+                    <i class="fa fa-file-code-o" aria-hidden="true"></i>
+                  </button>
+                </span>
               </div>
-              <!--
-              <input type="text" class="form-control" placeholder="Color" aria-label="HexColor" aria-describedby="basic-addon1">
-              <span class="input-group-addon" id="basic-addon1">
-                <i class="fa fa-tint" aria-hidden="true"></i>
-              </span>
-              -->
             </div>
           </div>
           <div class="col">
