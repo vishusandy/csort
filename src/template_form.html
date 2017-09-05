@@ -1,0 +1,82 @@
+
+      <form method="post" class="sticky-top">
+        <div class="row v-form">
+          <div class="col-md-3">
+            <!-- <input type="text" class="form-control" placeholder=""> -->
+            <div class="input-group">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Add Color" aria-label="Add Color">
+                <span class="input-group-btn">
+                  <button class="btn btn-secondary" type="button">
+                    <i class="fa fa-tint" aria-hidden="true"></i>
+                  </button>
+                </span>
+              </div>
+              <!--
+              <input type="text" class="form-control" placeholder="Color" aria-label="HexColor" aria-describedby="basic-addon1">
+              <span class="input-group-addon" id="basic-addon1">
+                <i class="fa fa-tint" aria-hidden="true"></i>
+              </span>
+              -->
+            </div>
+          </div>
+          <div class="col">
+            <div class="input-group">
+              <input type="text" name="hmin" class="form-control" placeholder="Hue Min" aria-label="HueMin">
+              <input type="text" name="smin" class="form-control" placeholder="Saturation Min" aria-label="SatMin">
+              <input type="text" name="lmin" class="form-control" placeholder="Lightness Min" aria-label="LumMin">
+            </div>
+            <div class="input-group">
+              <input type="text" name="hmax" class="form-control" placeholder="Hue Max" aria-label="HueMax">
+              <input type="text" name="smax" class="form-control" placeholder="Saturation Max" aria-label="SatMax">
+              <input type="text" name="lmax" class="form-control" placeholder="Lightness Max" aria-label="LumMax">
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon1">
+                <i class="fa fa-filter" aria-hidden="true"></i>
+              </span>
+              <select name="sort" id="SortBy" class="custom-select" style="width: 100%">
+                <option selected>Sort By...</option>
+                <option value="hsl">HSL</option>
+                <option value="hls">HLS</option>
+                <option value="lsh">LSH</option>
+                <option value="lhs">LHS</option>
+                <option value="slh">SLH</option>
+                <option value="shl">SHL</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon1">
+                <i class="fa fa-table" aria-hidden="true"></i>
+              </span>
+              <select name="layout" id="Layout" class="custom-select" onchange="set_layout()" style="width: 100%">
+                <!-- <option selected value="Grid">Layout</option> -->
+                <option value="Grid">Grid</option>
+                <option value="Table">List</option>
+                <option value="DoubleTable">Double List</option>
+              </select>
+            </div>
+            <div class="">
+            <div class="row">
+              <div class="col col-lg-5">
+                <button type="button" class="btn">
+                  <i class="fa fa-refresh" aria-hidden="true"></i>
+                </button>&nbsp;
+              </div>
+              <div class="col-md-auto">
+              </div>
+              <div class="col col-lg-5">
+                <button type="submit" class="btn">Submit</button>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </form>
+      <br>
+      
+      <div class="v-collection">
