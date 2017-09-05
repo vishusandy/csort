@@ -146,12 +146,13 @@ impl FromData for Page {
             Ok(_) => {},
             // _ => { return Outcome<Self, Self::Error>::Error },
             _ => { 
-                println!("Could not stream form data.");
-                return Outcome::Success(Page::default()) 
+                panic!("Could not stream form data");
+                // println!("Could not stream form data.");
+                // return Outcome::Success(Page::default()) 
             },
         }
         let fdata = str::from_utf8(&dat).unwrap_or("");
-        
+        println!("{:?}", fdata);
         // the potatoes
         // let mut sort: Option<SortMethod> = None;
         // let mut layout: Option<Layout> = None;
@@ -161,12 +162,25 @@ impl FromData for Page {
         // parts.foreach_entry(|mut entry| {
             // match entry.name.to_lowercase().as_str() {
         
-        let re = Regex::new("&").unwrap();
-        let re = Regex::new("=").unwrap();
-        for part in re.split(fdata) {
-            if part.contains("=") {
-                let pos = part.find("=").unwrap_or(0);
-                let (key, val) = part.split_at(pos);
+        // let re = Regex::new("&").unwrap();
+        // let re = Regex::new("=").unwrap();
+        // for part in re.split(fdata) {
+        let parts: Vec<&str> = fdata.split('&').collect();
+        
+        for part in parts {
+            // if part.contains("=") && !part.ends_with("=") {
+            if part != "" && !part.ends_with('=') {
+                // let pos = part.find('=').unwrap_or(0);
+                // let (key, val) = part.split_at(pos);
+                
+                let pieces: Vec<&str> = part.splitn(2, '=').collect();
+                if pieces.len() != 2 { continue; }
+                let key = pieces[0];
+                let val = pieces[1];
+                // match part.find('=') {
+                //     Some
+                // }
+                
                 
                 match key {
                     "sort" => {
@@ -308,11 +322,12 @@ pub fn form(ops: &Page) -> String {
         </div>
       </form>
       <br>
-      
+      Options: {opts:#?}
       <div class="v-collection">
 "###, 
         hslsel=selhsl, hlssel=selhls, lshsel=sellsh, lhssel=sellhs, slhsel=selslh, shlsel=selshl,
-        gridsel=selgrid, tablesel=seltable, doubletablesel=seldoubletable
+        gridsel=selgrid, tablesel=seltable, doubletablesel=seldoubletable,
+        opts=ops
     )
 }
 
