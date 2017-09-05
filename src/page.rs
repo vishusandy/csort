@@ -336,13 +336,13 @@ pub fn form(ops: &Page) -> String {
             <!-- <input type="text" class="form-control" placeholder=""> -->
             <div class="input-group">
               <div class="input-group">
-                <input type="text" name="add" class="form-control" placeholder="Add Color" aria-label="Add Color">
+                <!-- <input type="text" name="add" class="form-control" placeholder="Add Color" aria-label="Add Color">
                 <span class="input-group-btn">
                   <button class="btn btn-secondary" type="button">
                     <i class="fa fa-tint" aria-hidden="true"></i>
                   </button>
-                </span>
-                <input type="text" name="adds" class="form-control" placeholder="Add Color" aria-label="Add Color">
+                </span> -->
+                <input type="text" name="adds" class="form-control" placeholder="Add Colors" aria-label="Add Colors">
                 <span class="input-group-btn">
                   <button class="btn btn-secondary" type="button">
                     <i class="fa fa-file-code-o" aria-hidden="true"></i>
