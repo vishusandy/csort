@@ -77,5 +77,7 @@ fn findex(params: Page) -> String {
 
 fn main() {
     // println!("Hello, world!");
-    rocket::ignite().mount("/", routes![findex, index]).launch();
+    // rocket::ignite().mount("/", routes![findex, index]).launch();
+    
+    rocket::ignite().mount("/", routes![index]).launch();
 }
