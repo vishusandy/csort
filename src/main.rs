@@ -52,7 +52,7 @@ fn index() -> Html {
     output.push_str(&form(&params));
     output.push_str(&body(&list));
     output.push_str(&footer());
-
+    
     content::Html(output)
 }
 
