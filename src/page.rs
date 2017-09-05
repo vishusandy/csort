@@ -3,12 +3,15 @@ use std::io::{Cursor, Read};
 use rocket::{Request, Data, Outcome};
 use rocket::data::{self, FromData};
 use multipart::server::Multipart;
+use rocket::request::FromParam;
+use rocket::http::RawStr;
 
+use std::str;
 use std::str::FromStr;
 use std::result::Result;
 use rocket::request::FromFormValue;
-use rocket::request::FromParam;
-use rocket::http::RawStr;
+
+use regex::Regex;
 
 use colorhsl::*;
 
@@ -126,12 +129,28 @@ impl FromData for Page {
     
     fn from_data(request: &Request, data: Data) -> data::Outcome<Self, Self::Error> {
         // boring setup variables
+        
+        /*
         let contype = request.headers().get_one("Content-Type").expect("No content type specified.");
-        let cidx = contype.find("boundary=").expect("No boundary");
+        let cidx = contype.find("boundary=").unwrap_or(0);
         let boundary = &contype[(cidx + "boundary=".len())..];
         let mut dat = Vec::new();
         data.stream_to(&mut dat).expect("Could not read data stream");
+        println!(" --- Content type: {:?}", contype);
+        println!(" --- Dat: {:#?}", dat);
         let mut parts = Multipart::with_body(Cursor::new(dat), boundary);
+        */
+        
+        let mut dat = Vec::new();
+        match data.stream_to(&mut dat) {
+            Ok(_) => {},
+            // _ => { return Outcome<Self, Self::Error>::Error },
+            _ => { 
+                println!("Could not stream form data.");
+                return Outcome::Success(Page::default()) 
+            },
+        }
+        let fdata = str::from_utf8(&dat).unwrap_or("");
         
         // the potatoes
         // let mut sort: Option<SortMethod> = None;
@@ -139,26 +158,42 @@ impl FromData for Page {
         let mut sort = DEFAULT_SORT;
         let mut layout = DEFAULT_LAYOUT;
         
-        parts.foreach_entry(|mut entry| {
-            match entry.name.to_lowercase().as_str() {
-                "sort" => {
-                    let t = entry.data.as_text().unwrap_or("");
-                    // sort = Some(t.into());
-                    sort = SortMethod::create(t);
-                },
-                "layout" => {
-                    let t = entry.data.as_text().unwrap_or("");
-                    layout = Layout::create(t);
-                },
-                // "file" => {
-                //     let mut d = Vec::new();
-                //     let f = entry.data.as_file().expect("not file");
-                //     f.read_to_end(&mut d).expect("cant read");
-                //     file = Some(d);
-                // },
-                _ => {},
+        // parts.foreach_entry(|mut entry| {
+            // match entry.name.to_lowercase().as_str() {
+        
+        let re = Regex::new("&").unwrap();
+        let re = Regex::new("=").unwrap();
+        for part in re.split(fdata) {
+            if part.contains("=") {
+                let pos = part.find("=").unwrap_or(0);
+                let (key, val) = part.split_at(pos);
+                
+                match key {
+                    "sort" => {
+                        // let t = entry.data.as_text().unwrap_or("");
+                        // sort = Some(t.into());
+                        // sort = SortMethod::create(t);
+                        sort = SortMethod::create(val);
+                        println!("Set Sort to {:?}", sort);
+                    },
+                    "layout" => {
+                        // let t = entry.data.as_text().unwrap_or("");
+                        // layout = Layout::create(t);
+                        layout = Layout::create(val);
+                        println!("Set Layout to {:?}", layout);
+                    },
+                    // To be implemented later to upload color files
+                    // "file" => {
+                    //     let mut d = Vec::new();
+                    //     let f = entry.data.as_file().expect("not file");
+                    //     f.read_to_end(&mut d).expect("cant read");
+                    //     file = Some(d);
+                    // },
+                    _ => {},
+                }
             }
-        }).expect("Failed to iterate parts.");
+        }
+        // }).expect("Failed to iterate parts.");
         
         let o = Page {
             sort,
