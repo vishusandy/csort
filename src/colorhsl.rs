@@ -126,6 +126,19 @@ impl ColorHsl {
         v
     }
     
+    pub fn sort_vector<F>(colors: &Vec<ColorHsl>, mut sorter: F) -> Vec<ColorHsl>
+        where F: FnMut(&ColorHsl, &ColorHsl) -> Ordering
+    {
+        let mut v: Vec<ColorHsl> = Vec::new();
+        for value in colors {
+            v.push(value.clone());
+        }
+        // maybe take out the closure and replace with just the function?
+        
+        v.sort_by(|ref a, ref b| sorter(&a, &b));
+        v
+    }
+    
     pub fn info_str(&self) -> String {
         // format!("{}\t{:03}\t{:03}\t{:03}\t{}\t{}\t{}\t{}"
         format!("{}\t{:03}\t{:03}\t{:03}\t{:.6}\t{:.6}\t{:.6}\t{}"

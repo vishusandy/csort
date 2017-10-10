@@ -15,6 +15,7 @@ use rocket::request::FromFormValue;
 use regex::Regex;
 
 use colorhsl::*;
+use sort_hsl::*;
 
 struct Filter {
     
@@ -123,6 +124,19 @@ impl SortMethod {
             _ => DEFAULT_SORT,
         }
     }
+    pub fn sort(&self, list: &Vec<ColorHsl>) -> Vec<ColorHsl> {
+        // let new: Vec<ColorHsl> = list.clone();
+        match self {
+            &SortMethod::Hsl => ColorHsl::sort_vector(list, sort_by_hsl),
+            &SortMethod::Hls => ColorHsl::sort_vector(list, sort_by_hls),
+            &SortMethod::Lsh => ColorHsl::sort_vector(list, sort_by_lsh),
+            &SortMethod::Lhs => ColorHsl::sort_vector(list, sort_by_lhs),
+            &SortMethod::Slh => ColorHsl::sort_vector(list, sort_by_slh),
+            &SortMethod::Shl => ColorHsl::sort_vector(list, sort_by_shl),
+                          _ => ColorHsl::sort_vector(list, sort_by_hls),
+        }
+        
+    }
 }
 
 impl FromStr for SortMethod {
@@ -141,7 +155,7 @@ pub struct Page {
     pub layout: Layout,
     pub add: Option<ColorHsl>,
     pub adds: Option<Vec<ColorHsl>>,
-    
+    pub persist: Vec<String>,
     
 }
 
@@ -152,6 +166,7 @@ impl Clone for Page {
             layout: self.layout.clone(),
             add: self.add.clone(),
             adds: self.adds.clone(),
+            persist: self.persist.clone(),
         }
     }
 }
@@ -163,6 +178,7 @@ impl Page {
             layout: DEFAULT_LAYOUT,
             add: None,
             adds: None,
+            persist: Vec::new(),
         }
     }
 }
@@ -188,6 +204,7 @@ impl FromData for Page {
         let mut layout = DEFAULT_LAYOUT;
         let mut add = None;
         let mut adds = None;
+        let mut persist: Vec<String> = Vec::new();
 
         let parts: Vec<&str> = fdata.split('&').collect();
         
@@ -200,6 +217,18 @@ impl FromData for Page {
                 
                 
                 match key {
+                    "persistence" => {
+                        let de = URI::percent_decode(val.as_bytes());
+                        let decoded: String = match de {
+                            Ok(d2) => d2.to_string().replace("+", " "),
+                            _ => "".to_string(),
+                        };
+                        // for raw in decoded.split(',') {
+                        //     let d = raw.trim();
+                        // }
+                        let colors: Vec<_> = decoded.split(',').map(|ref c| c.trim().to_string()).collect();
+                        persist = colors;
+                    },
                     "sort" => {
                         sort = SortMethod::create(val);
                         println!("Set Sort to {:?}", sort);
@@ -302,6 +331,7 @@ impl FromData for Page {
             layout,
             add,
             adds,
+            persist,
         };
         
         Outcome::Success(o)

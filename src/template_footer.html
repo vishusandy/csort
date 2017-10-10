@@ -51,18 +51,23 @@
       function persist() {
         // var xs = document.querySelector("div.user-panel.main input[name='login']");
         // var xs = document.querySelector(".v-table-hex");
-        var xs = document.querySelector(".v-topbox");
+        // var xs = document.querySelector(".v-topbox");
+        var xs = getElementsByClassName('v-topbox');
         var colors = [];
         for(i=0;i<xs.length;i++) {
+          // console.log("Iteration " + i);
           var x = xs[i];
           var color = x.dataset.clipboardText;
           if(colors.indexOf(color) == -1) {
+            // console.log("Adding " + color);
             colors.push(color);
           } else {
-            alert("Color `" + color + "` is a duplicate");
+            console.log("Warning: Color `" + color + "` is a duplicate");
           }
         }
+        // console.log("Finished adding colors, added " + colors.length + " colors");
         
+        console.log(colors);
         document.colrform.persistence.value = colors.toString();
         // return colors.toString(); // returns color1,color2,color3, ... ,colorX
         // return colors.join(",")

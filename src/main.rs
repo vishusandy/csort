@@ -88,6 +88,11 @@ fn findex(params: Page) -> Html {
     
     
     let po = params.to_owned();
+    if po.persist.len() != 0 {
+        // list.extend_from_slice(po.persist.as_slice());
+        let new: Vec<ColorHsl> = po.persist.iter().filter_map(|ref x| ColorHsl::from_hex(&x, &x)).collect();
+        list.extend_from_slice(new.as_slice());
+    }
     if po.add.is_some() {
         list.push(po.add.unwrap());
         // let newadd = (&params).add.unwrap().clone();
@@ -96,7 +101,12 @@ fn findex(params: Page) -> Html {
     if po.adds.is_some() {
         list.extend_from_slice(po.adds.unwrap().as_slice());
     }
-        
+    // list.sort();
+    
+    let mut sorted_list = po.sort.sort(&list);
+    sorted_list.dedup();
+    
+    
     // if pc.add.is_some() {
     //     let orig 
     //     let Some(pc) = params.add;
@@ -107,7 +117,7 @@ fn findex(params: Page) -> Html {
     
     output.push_str(&header());
     output.push_str(&form(&params));
-    output.push_str(&body(&list));
+    output.push_str(&body(&sorted_list));
     output.push_str(&footer());
 
     content::Html(output)
