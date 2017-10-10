@@ -1,23 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="css/font-awesome.min.css">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-    <link type="text/css" href="css/grid.css" rel="alternate stylesheet" title="LayoutGrid" />
-    <link type="text/css" href="css/list.css" rel="alternate stylesheet" title="LayoutList" />
-    <link type="text/css" href="css/doublelist.css" rel="alternate stylesheet" title="LayoutDoubleList" />
-    
-    <link id="pageStyleSheet" type="text/css" href="css/doublelist.css" rel="stylesheet" />
-    
-    <script src="js-head.js"></script>
-    <script src="jss.min.js"></script>
-    <!--
-    <style>
     .v-main {
       margin: auto;
       /* margin-top: 4em; */
@@ -50,6 +30,7 @@
     .v-cont {
       /* width: 200px; */
       /* width: 100%; */
+      width: 45%;
       border: 2px solid rgba(0,0,0,.125);
       border-radius: .5rem;
       padding: 4px;
@@ -94,15 +75,3 @@
       background-image: -webkit-linear-gradient(left top, rgba(0,0,0,0.1) 25%,rgba(0,0,0,0) 25%,rgba(0,0,0,0) 50%,rgba(0,0,0,0.1) 50%,rgba(0,0,0,0.1) 75%,rgba(0,0,0,0) 75%,rgba(0,0,0,0))
     }
     */
-    
-    </style>
-  -->
-  </head>
-  <body>
-  <!--
-  <i class="fa fa-filter" aria-hidden="true"></i>
-  
-  
-  -->
-    <div class="v-main">
-      <br>

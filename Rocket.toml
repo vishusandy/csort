@@ -1,0 +1,15 @@
+[development]
+address = "localhost"
+port = 8000
+limits = { forms = 4194304 }
+
+[staging]
+address = "localhost"
+port = 8000
+limits = { forms = 65536 }
+
+[production]
+address = "localhost"
+port = 8000
+log = "critical"
+limits = { forms = 32768 }

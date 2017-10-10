@@ -78,6 +78,15 @@
       function set_layout() {
         var layout = document.getElementById('Layout').value;
         if (layout == "Table") {
+          changeStyle("css/list.css");
+        } else if (layout == "Grid") {
+          changeStyle("css/grid.css");
+        } else if (layout == "DoubleTable") {
+          changeStyle("css/doublelist.css");
+        }
+        
+        /*
+        if (layout == "Table") {
           var cur = jss.getAll('.v-cont');
           cur.width = "100%";
           cur.maxWidth = "";
@@ -93,6 +102,7 @@
           cur.maxWidth = "";
           jss.set('.v-cont', cur);
         }
+        */
       }
       set_layout();
       /*
@@ -112,6 +122,40 @@
               x[i].parentNode.style.color = "#f9f9f9";
           }
       }*/
+      
+      // https://stackoverflow.com/questions/14292997/changing-style-sheet-javascript
+      // http://www.developphp.com/video/JavaScript/Change-Style-Sheet-Using-Tutorial-CSS-Swap-Stylesheet
+      function changeStyle(cssfile) {
+        document.getElementById("pageStyleSheet").setAttribute("href", cssfile);
+      }
+      // https://stackoverflow.com/a/18748763/7891095
+      /*
+      function getCSSArray() {
+          var links = document.getElementsByTagName("link");
+          var link;
+          for(var i = 0; i < links.length; i++)
+          {
+              link = links[i];
+              if(/stylesheet/.test(link.rel))
+              {
+                  sheets.push(link);
+              }
+          }
+          return sheets;
+      }
+      function printView(chosen="doublelist") {
+        var sheet;
+        // var title1 = "printVersion";
+        for(i = 0; i < sheets.length; i++) {
+            sheet = sheets[i];
+            if(sheet.title == chosen) {
+                sheet.disabled = false;
+            } else {
+                sheet.disabled = true;
+            }
+        }
+        */
+    //  <a href="#" onClick ="methodName();">Link Name</a>
       
     </script>
   </body>

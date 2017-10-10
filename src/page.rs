@@ -362,7 +362,7 @@ pub fn form(ops: &Page) -> String {
     format!(r###"
       <form method="post" name="colrform" action="http://localhost:8000/" class="sticky-top" onsubmit="persist()">
         <div class="row v-form">
-          <div class="col-md-3">
+          <div class="col-md-6">
             <!-- <input type="text" class="form-control" placeholder=""> -->
             <div class="input-group">
               <div class="input-group">
@@ -381,6 +381,7 @@ pub fn form(ops: &Page) -> String {
               </div>
             </div>
           </div>
+          <!--
           <div class="col">
             <div class="input-group">
               <input type="text" name="hmin" class="form-control" placeholder="Hue Min" aria-label="HueMin">
@@ -393,7 +394,8 @@ pub fn form(ops: &Page) -> String {
               <input type="text" name="lmax" class="form-control" placeholder="Lightness Max" aria-label="LumMax">
             </div>
           </div>
-          <div class="col-md-3">
+          -->
+          <div class="col-md-2">
             <div class="input-group">
               <span class="input-group-addon" id="basic-addon1">
                 <i class="fa fa-filter" aria-hidden="true"></i>
@@ -410,12 +412,28 @@ pub fn form(ops: &Page) -> String {
             </div>
           </div>
           <div class="col-md-2">
+              <div class="input-group">
+                  <span class="input-group-addon" id="basic-addon1">
+                    <i class="fa fa-table" aria-hidden="true"></i>
+                  </span>
+                  <select name="layout" id="Layout" class="custom-select" onchange="set_layout()" style="width: 100%">
+                    <option {gridsel} value="Grid">Grid</option>
+                    <option {doubletablesel} value="DoubleTable">Double List</option>
+                    <option {tablesel} value="Table">List</option>
+                  </select>
+                </div>
+          </div>
+          <div class="col-md-1">
+            <button type="submit" class="btn">Submit</button>
+          </div>
+          <!--
+          <div class="col-md-2">
             <div class="input-group">
               <span class="input-group-addon" id="basic-addon1">
                 <i class="fa fa-table" aria-hidden="true"></i>
               </span>
               <select name="layout" id="Layout" class="custom-select" onchange="set_layout()" style="width: 100%">
-                <!-- <option selected value="Grid">Layout</option> -->
+                <! - - <option selected value="Grid">Layout</option> - - >
                 <option {gridsel} value="Grid">Grid</option>
                 <option {doubletablesel} value="DoubleTable">Double List</option>
                 <option {tablesel} value="Table">List</option>
@@ -423,6 +441,7 @@ pub fn form(ops: &Page) -> String {
             </div>
             <div class="">
             <div class="row">
+              <! - - 
               <div class="col col-lg-5">
                 <button type="button" class="btn">
                   <i class="fa fa-refresh" aria-hidden="true"></i>
@@ -431,22 +450,33 @@ pub fn form(ops: &Page) -> String {
               <div class="col-md-auto">
               </div>
               <div class="col col-lg-5">
+              
+              </div>
+              <div class="col">
+              <div class="col col-lg-1">
+              </div>
+              <div class="col-md-auto">
+              </div>
+              - - >
+              <div class="col col-lg-5">
                 <button type="submit" class="btn">Submit</button>
               </div>
             </div>
             </div>
+          -->
           </div>
         </div>
         <input type="hidden" name="persistence" value="">
       </form>
       <br>
-      Options: {opts:#?}
       <div class="v-collection">
 "###, 
         hslsel=selhsl, hlssel=selhls, lshsel=sellsh, lhssel=sellhs, slhsel=selslh, shlsel=selshl,
-        gridsel=selgrid, tablesel=seltable, doubletablesel=seldoubletable,
-        opts=ops
+        gridsel=selgrid, tablesel=seltable, doubletablesel=seldoubletable
+        // ,opts=ops
     )
+      // after <br>, before <div class="v-collection">
+      // Options: {opts:#?}
 }
 
 pub fn color_template(c: &ColorHsl) -> String {
@@ -459,7 +489,7 @@ pub fn color_template(c: &ColorHsl) -> String {
             <div class=\"v-rightbox\">
               <div class=\"\"><div class=\"v-table-hex\">{hex}</div></div>
               <div class=\"\"><div class=\"v-table-rgb\" data-clipboard-text=\"{red}, {green}, {blue}\">{red}, {green}, {blue}</div></div>
-              <div class=\"\"><div class=\"v-table-hsl\" data-clipboard-text=\"{hue:.4}, {sat:.4}, {lum:.4}\">{hue:.4}, {sat:.4}, {lum:.4}</div></div>
+              <div class=\"\"><div class=\"v-table-hsl\" data-clipboard-text=\"{hue:.4}, {sat:.4}, {lum:.4}\">{hue:.2}, {sat:.2}, {lum:.2}</div></div>
             </div>
           </div>
         </div>
