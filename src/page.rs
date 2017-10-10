@@ -330,7 +330,7 @@ pub fn form(ops: &Page) -> String {
     
     
     format!(r###"
-      <form method="post" action="http://localhost:8000/" class="sticky-top">
+      <form method="post" name="colrform" action="http://localhost:8000/" class="sticky-top" onsubmit="persist()">
         <div class="row v-form">
           <div class="col-md-3">
             <!-- <input type="text" class="form-control" placeholder=""> -->
@@ -387,8 +387,8 @@ pub fn form(ops: &Page) -> String {
               <select name="layout" id="Layout" class="custom-select" onchange="set_layout()" style="width: 100%">
                 <!-- <option selected value="Grid">Layout</option> -->
                 <option {gridsel} value="Grid">Grid</option>
-                <option {tablesel} value="Table">List</option>
                 <option {doubletablesel} value="DoubleTable">Double List</option>
+                <option {tablesel} value="Table">List</option>
               </select>
             </div>
             <div class="">
@@ -407,6 +407,7 @@ pub fn form(ops: &Page) -> String {
             </div>
           </div>
         </div>
+        <input type="hidden" name="persistence" value="">
       </form>
       <br>
       Options: {opts:#?}

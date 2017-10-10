@@ -1,4 +1,6 @@
 
+// #![feature(const_unsafe_cell_new)]
+// #![feature(const_atomic_bool_new)]
 
 #![feature(custom_derive)]
 #![feature(plugin)]

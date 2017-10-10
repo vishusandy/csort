@@ -15,73 +15,98 @@
       var clipboard = new Clipboard('.v-topbox');
       var clipboard2 = new Clipboard('.v-table-rgb');
       var clipboard3 = new Clipboard('.v-table-hsl');
-        clipboard.on('success', function(e) {
-            console.log(e);
-        });
-        clipboard.on('error', function(e) {
-            console.log(e);
-        });
-        clipboard2.on('success', function(e) {
-            console.log(e);
-        });
-        clipboard2.on('error', function(e) {
-            console.log(e);
-        });
-        clipboard3.on('success', function(e) {
-            console.log(e);
-        });
-        clipboard3.on('error', function(e) {
-            console.log(e);
-        });
-        x = getElementsByClassName('v-colorbox');
-        for(i=0;i<x.length;i++) {
-          var colr = x[i].parentNode.parentNode.dataset.clipboardText;
-          x[i].style.backgroundColor = colr;
-          x[i].parentNode.parentNode.parentNode.style.borderColor = colr;
-          var darkcolr = calcopacity(colr, "#000000", .75);
-          x[i].parentNode.parentNode.parentNode.style.borderColor = colr;
-          x[i].parentNode.parentNode.parentNode.style.backgroundColor = darkcolr;
-          if(isLight(darkcolr, 130.5)) {
-            x[i].parentNode.parentNode.parentNode.style.color = "#161616";
+      clipboard.on('success', function(e) {
+          console.log(e);
+      });
+      clipboard.on('error', function(e) {
+          console.log(e);
+      });
+      clipboard2.on('success', function(e) {
+          console.log(e);
+      });
+      clipboard2.on('error', function(e) {
+          console.log(e);
+      });
+      clipboard3.on('success', function(e) {
+          console.log(e);
+      });
+      clipboard3.on('error', function(e) {
+          console.log(e);
+      });
+      x = getElementsByClassName('v-colorbox');
+      for(i=0;i<x.length;i++) {
+        var colr = x[i].parentNode.parentNode.dataset.clipboardText;
+        x[i].style.backgroundColor = colr;
+        x[i].parentNode.parentNode.parentNode.style.borderColor = colr;
+        var darkcolr = calcopacity(colr, "#000000", .75);
+        x[i].parentNode.parentNode.parentNode.style.borderColor = colr;
+        x[i].parentNode.parentNode.parentNode.style.backgroundColor = darkcolr;
+        if(isLight(darkcolr, 130.5)) {
+          x[i].parentNode.parentNode.parentNode.style.color = "#161616";
+        } else {
+          x[i].parentNode.parentNode.parentNode.style.color = "#f9f9f9";
+        }
+      }
+      
+      function persist() {
+        // var xs = document.querySelector("div.user-panel.main input[name='login']");
+        // var xs = document.querySelector(".v-table-hex");
+        var xs = document.querySelector(".v-topbox");
+        var colors = [];
+        for(i=0;i<xs.length;i++) {
+          var x = xs[i];
+          var color = x.dataset.clipboardText;
+          if(colors.indexOf(color) == -1) {
+            colors.push(color);
           } else {
-            x[i].parentNode.parentNode.parentNode.style.color = "#f9f9f9";
+            alert("Color `" + color + "` is a duplicate");
           }
         }
         
-        function set_layout() {
-          var layout = document.getElementById('Layout').value;
-          if (layout == "Table") {
-            var cur = jss.getAll('.v-cont');
-            cur.width = "100%";
-            jss.set('.v-cont', cur);
-          } else if (layout == "Grid") {
-            var cur = jss.getAll('.v-cont');
-            cur.width = "";
-            jss.set('.v-cont', cur);
-          } else if (layout == "DoubleTable") {
-            var cur = jss.getAll('.v-cont');
-            cur.width = "45%";
-            jss.set('.v-cont', cur);
-          }
+        document.colrform.persistence.value = colors.toString();
+        // return colors.toString(); // returns color1,color2,color3, ... ,colorX
+        // return colors.join(",")
+        
+        
+      }
+      
+      function set_layout() {
+        var layout = document.getElementById('Layout').value;
+        if (layout == "Table") {
+          var cur = jss.getAll('.v-cont');
+          cur.width = "100%";
+          cur.maxWidth = "";
+          jss.set('.v-cont', cur);
+        } else if (layout == "Grid") {
+          var cur = jss.getAll('.v-cont');
+          cur.width = "";
+          cur.maxWidth = "13%";
+          jss.set('.v-cont', cur);
+        } else if (layout == "DoubleTable") {
+          var cur = jss.getAll('.v-cont');
+          cur.width = "45%";
+          cur.maxWidth = "";
+          jss.set('.v-cont', cur);
         }
-        set_layout();
-        /*
-        x = getElementsByClassName('colors');
-        for(i=0;i<x.length;i++){
-            var colr = x[i].innerHTML;
-            var hex = x[i].parentNode.children[3].innerHTML;
-            x[i].parentNode.children[0].style.backgroundColor = "rgb(" + colr + ")";
-            x[i].parentNode.children[0].title = colr;
-            var darkcolr = calcopacity(hex, "#000000", 0.8);
-            x[i].parentNode.style.backgroundColor = darkcolr;
-            if(isLight(darkcolr, 127.5)) {
-                // x[i].parentNode.children[1].innerHTML = "Light : " + x[i].parentNode.children[1].innerHTML;
-                x[i].parentNode.style.color = "#161616";
-            } else {
-                // x[i].parentNode.children[1].innerHTML = "Dark : " + x[i].parentNode.children[1].innerHTML;
-                x[i].parentNode.style.color = "#f9f9f9";
-            }
-        }*/
+      }
+      set_layout();
+      /*
+      x = getElementsByClassName('colors');
+      for(i=0;i<x.length;i++){
+          var colr = x[i].innerHTML;
+          var hex = x[i].parentNode.children[3].innerHTML;
+          x[i].parentNode.children[0].style.backgroundColor = "rgb(" + colr + ")";
+          x[i].parentNode.children[0].title = colr;
+          var darkcolr = calcopacity(hex, "#000000", 0.8);
+          x[i].parentNode.style.backgroundColor = darkcolr;
+          if(isLight(darkcolr, 127.5)) {
+              // x[i].parentNode.children[1].innerHTML = "Light : " + x[i].parentNode.children[1].innerHTML;
+              x[i].parentNode.style.color = "#161616";
+          } else {
+              // x[i].parentNode.children[1].innerHTML = "Dark : " + x[i].parentNode.children[1].innerHTML;
+              x[i].parentNode.style.color = "#f9f9f9";
+          }
+      }*/
       
     </script>
   </body>
