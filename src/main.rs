@@ -103,7 +103,8 @@ fn findex(params: Page) -> Html {
     }
     // list.sort();
     
-    let mut sorted_list = po.sort.sort(&list);
+    let mut sorted_list = po.sort.sort(&list, po.reverse);
+    
     sorted_list.dedup();
     
     

@@ -27,18 +27,22 @@
     }
     .v-colorbox {
       height: 4em;
-      width: 2em;
+      width: 4em;
       border: 1px solid #666;
       border-radius: 6px;
     }
     .v-cont {
       /* width: 200px; */
       /* width: 100%; */
-      width: 100%;
+      
+      /*max-width: 13%;*/
+      width: 20ch;
+      /*min-width: 5em;*/
       border: 2px solid rgba(0,0,0,.125);
       border-radius: .5rem;
       padding: 4px;
-      margin: .5em;
+      /*margin: .1em;  Originally .5em */
+      margin: 1px;
     }
     .v-cont:hover {
       border-color: #65c3fa;

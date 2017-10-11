@@ -55,6 +55,28 @@ fn cmp_l(a: &ColorHsl, b: &ColorHsl) -> Ordering {
     a.l.partial_cmp(&b.l).unwrap_or(Ordering::Equal)
 }
 
+fn cmp_rh(a: &ColorHsl, b: &ColorHsl) -> Ordering {
+    match a.h.partial_cmp(&b.h).unwrap_or(Ordering::Equal) {
+        Ordering::Greater => Ordering::Less,
+        Ordering::Equal => Ordering::Equal,
+        Ordering::Less => Ordering::Greater,
+    }
+}
+fn cmp_rs(a: &ColorHsl, b: &ColorHsl) -> Ordering {
+    match a.s.partial_cmp(&b.s).unwrap_or(Ordering::Equal) {
+        Ordering::Greater => Ordering::Less,
+        Ordering::Equal => Ordering::Equal,
+        Ordering::Less => Ordering::Greater,
+    }
+}
+fn cmp_rl(a: &ColorHsl, b: &ColorHsl) -> Ordering {
+    match a.l.partial_cmp(&b.l).unwrap_or(Ordering::Equal) {
+        Ordering::Greater => Ordering::Less,
+        Ordering::Equal => Ordering::Equal,
+        Ordering::Less => Ordering::Greater,
+    }
+}
+
 
 // pub fn sort_method(by: SortBy) -> Box<Fn(&ColorHsl, &ColorHsl) -> Ordering {
     // Box::new()
@@ -210,3 +232,89 @@ pub fn sort_by_lhs(a: &ColorHsl, b: &ColorHsl) -> Ordering {
         x => x,
     }
 }
+
+
+
+
+
+
+pub fn sort_rev_hsl(a: &ColorHsl, b: &ColorHsl) -> Ordering {
+    match cmp_rh(a, b) { // == Ordering::Equal {
+        Ordering::Equal => match cmp_rs(a, b) {
+            Ordering::Equal => cmp_rl(a, b),
+            y => y,
+        },
+        x => x,
+    }
+}
+
+pub fn sort_rev_hls(a: &ColorHsl, b: &ColorHsl) -> Ordering {
+    match cmp_rh(a, b) { // == Ordering::Equal {
+        Ordering::Equal => match cmp_rl(a, b) {
+            Ordering::Equal => cmp_rs(a, b),
+            y => y,
+        },
+        x => x,
+    }
+}
+
+pub fn sort_rev_lsh(a: &ColorHsl, b: &ColorHsl) -> Ordering {
+    match cmp_rl(a, b) { // == Ordering::Equal {
+        Ordering::Equal => match cmp_rs(a, b) {
+            Ordering::Equal => cmp_rh(a, b),
+            y => y,
+        },
+        x => x,
+    }
+}
+
+pub fn sort_rev_slh(a: &ColorHsl, b: &ColorHsl) -> Ordering {
+    match cmp_rs(a, b) { // == Ordering::Equal {
+        Ordering::Equal => match cmp_rl(a, b) {
+            Ordering::Equal => cmp_rh(a, b),
+            y => y,
+        },
+        x => x,
+    }
+}
+
+pub fn sort_rev_shl(a: &ColorHsl, b: &ColorHsl) -> Ordering {
+    match cmp_rs(a, b) { // == Ordering::Equal {
+        Ordering::Equal => match cmp_rh(a, b) {
+            Ordering::Equal => cmp_rl(a, b),
+            y => y,
+        },
+        x => x,
+    }
+}
+
+pub fn sort_rev_lhs(a: &ColorHsl, b: &ColorHsl) -> Ordering {
+    match cmp_rl(a, b) { // == Ordering::Equal {
+        Ordering::Equal => match cmp_rh(a, b) {
+            Ordering::Equal => cmp_rs(a, b),
+            y => y,
+        },
+        x => x,
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

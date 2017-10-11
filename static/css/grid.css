@@ -1,3 +1,7 @@
+    .revsort {
+      text-align: right;
+    }
+
     .v-main {
       margin: auto;
       /* margin-top: 4em; */
@@ -22,15 +26,14 @@
       background-color: #fafafa;
     }
     .v-colorbox {
-      height: 4em;
-      width: 4em;
+      height: 2.8em;
+      width: 2.8em;
       border: 1px solid #666;
       border-radius: 6px;
     }
     .v-cont {
       /* width: 200px; */
       /* width: 100%; */
-      max-width: 13%;
       /*min-width: 5em;*/
       border: 2px solid rgba(0,0,0,.125);
       border-radius: .5rem;
@@ -47,6 +50,8 @@
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
+      width: 90%;
+      margin: 0px auto;
     }
     .v-topbox {
       display: flex;

@@ -26,6 +26,7 @@ pub enum Layout {
     Grid,
     Table,
     DoubleTable,
+    Block,
     Error,
 }
 
@@ -37,6 +38,7 @@ impl Layout {
             "grid" => Layout::Grid,
             "table" => Layout::Table,
             "doubletable" => Layout::DoubleTable,
+            "block" => Layout::Block,
             "" => DEFAULT_LAYOUT,
             _ => Layout::Error,
         }
@@ -46,6 +48,7 @@ impl Layout {
             "grid" => Layout::Grid,
             "table" => Layout::Table,
             "doubletable" => Layout::DoubleTable,
+            "block" => Layout::Block,
             _ => DEFAULT_LAYOUT,
         }
     } 
@@ -57,6 +60,7 @@ impl Clone for Layout {
             Layout::Grid => Layout::Grid,
             Layout::Table => Layout::Table,
             Layout::DoubleTable => Layout::DoubleTable,
+            Layout::Block => Layout::Block,
             Layout::Error => Layout::Error, 
         }
     }
@@ -124,16 +128,28 @@ impl SortMethod {
             _ => DEFAULT_SORT,
         }
     }
-    pub fn sort(&self, list: &Vec<ColorHsl>) -> Vec<ColorHsl> {
+    pub fn sort(&self, list: &Vec<ColorHsl>, reverse: bool) -> Vec<ColorHsl> {
         // let new: Vec<ColorHsl> = list.clone();
-        match self {
-            &SortMethod::Hsl => ColorHsl::sort_vector(list, sort_by_hsl),
-            &SortMethod::Hls => ColorHsl::sort_vector(list, sort_by_hls),
-            &SortMethod::Lsh => ColorHsl::sort_vector(list, sort_by_lsh),
-            &SortMethod::Lhs => ColorHsl::sort_vector(list, sort_by_lhs),
-            &SortMethod::Slh => ColorHsl::sort_vector(list, sort_by_slh),
-            &SortMethod::Shl => ColorHsl::sort_vector(list, sort_by_shl),
-                          _ => ColorHsl::sort_vector(list, sort_by_hls),
+        if !reverse {
+            match self {
+                &SortMethod::Hsl => ColorHsl::sort_vector(list, sort_by_hsl),
+                &SortMethod::Hls => ColorHsl::sort_vector(list, sort_by_hls),
+                &SortMethod::Lsh => ColorHsl::sort_vector(list, sort_by_lsh),
+                &SortMethod::Lhs => ColorHsl::sort_vector(list, sort_by_lhs),
+                &SortMethod::Slh => ColorHsl::sort_vector(list, sort_by_slh),
+                &SortMethod::Shl => ColorHsl::sort_vector(list, sort_by_shl),
+                              _ => ColorHsl::sort_vector(list, sort_by_hls),
+            }
+        } else {
+            match self {
+                &SortMethod::Hsl => ColorHsl::sort_vector(list, sort_rev_hsl),
+                &SortMethod::Hls => ColorHsl::sort_vector(list, sort_rev_hls),
+                &SortMethod::Lsh => ColorHsl::sort_vector(list, sort_rev_lsh),
+                &SortMethod::Lhs => ColorHsl::sort_vector(list, sort_rev_lhs),
+                &SortMethod::Slh => ColorHsl::sort_vector(list, sort_rev_slh),
+                &SortMethod::Shl => ColorHsl::sort_vector(list, sort_rev_shl),
+                              _ => ColorHsl::sort_vector(list, sort_rev_hls),
+            }
         }
         
     }
@@ -156,6 +172,7 @@ pub struct Page {
     pub add: Option<ColorHsl>,
     pub adds: Option<Vec<ColorHsl>>,
     pub persist: Vec<String>,
+    pub reverse: bool,
     
 }
 
@@ -167,6 +184,7 @@ impl Clone for Page {
             add: self.add.clone(),
             adds: self.adds.clone(),
             persist: self.persist.clone(),
+            reverse: if self.reverse { true } else { false },
         }
     }
 }
@@ -179,6 +197,7 @@ impl Page {
             add: None,
             adds: None,
             persist: Vec::new(),
+            reverse: false,
         }
     }
 }
@@ -205,6 +224,7 @@ impl FromData for Page {
         let mut add = None;
         let mut adds = None;
         let mut persist: Vec<String> = Vec::new();
+        let mut reverse: bool = false;
 
         let parts: Vec<&str> = fdata.split('&').collect();
         
@@ -228,6 +248,11 @@ impl FromData for Page {
                         // }
                         let colors: Vec<_> = decoded.split(',').map(|ref c| c.trim().to_string()).collect();
                         persist = colors;
+                    },
+                    "reverse" => {
+                        if val == "true" {
+                            reverse = true;
+                        }
                     },
                     "sort" => {
                         sort = SortMethod::create(val);
@@ -332,6 +357,7 @@ impl FromData for Page {
             add,
             adds,
             persist,
+            reverse,
         };
         
         Outcome::Success(o)
@@ -354,30 +380,42 @@ pub fn form(ops: &Page) -> String {
     let selslh = match ops.sort { SortMethod::Slh => "selected", _ =>  "" };
     let selshl = match ops.sort { SortMethod::Shl => "selected", _ =>  "" };
     
+    let selrev = match ops.reverse { true => "checked", false => "" };
+    
     let selgrid = match ops.layout { Layout::Grid => "selected", _ =>  "" };
     let seltable = match ops.layout { Layout::Table => "selected", _ =>  "" };
     let seldoubletable = match ops.layout { Layout::DoubleTable => "selected", _ =>  "" };
-    
+    let selblock = match ops.layout { Layout::Block => "selected", _ => "" };
     
     format!(r###"
       <form method="post" name="colrform" action="http://localhost:8000/" class="sticky-top" onsubmit="persist()">
         <div class="row v-form">
-          <div class="col-md-6">
+          
+          <div class="col-md-4">
             <!-- <input type="text" class="form-control" placeholder=""> -->
             <div class="input-group">
               <div class="input-group">
-                <!-- <input type="text" name="add" class="form-control" placeholder="Add Color" aria-label="Add Color">
-                <span class="input-group-btn">
-                  <button class="btn btn-secondary" type="button">
-                    <i class="fa fa-tint" aria-hidden="true"></i>
-                  </button>
-                </span> -->
-                <input type="text" name="adds" class="form-control" placeholder="Add Colors" aria-label="Add Colors">
+                <!--
+                <input type="text" name="add" class="form-control" placeholder="Add Color" aria-label="Add Color">
                 <span class="input-group-btn">
                   <button class="btn btn-secondary" type="button">
                     <i class="fa fa-file-code-o" aria-hidden="true"></i>
                   </button>
                 </span>
+                -->
+                
+                <input type="text" name="adds" class="form-control" placeholder="Add Colors" aria-label="Add Colors">
+                <!-- 
+                <span class="input-group-btn">
+                  <button class="btn btn-secondary" type="button">
+                    <i class="fa fa-tint" aria-hidden="true"></i>
+                  </button>
+                  -->
+                  <span class="input-group-addon" id="basic-addon1">
+                    <i class="fa fa-tint" aria-hidden="true"></i>
+                  </span>
+                <!-- </span> -->
+                
               </div>
             </div>
           </div>
@@ -395,6 +433,18 @@ pub fn form(ops: &Page) -> String {
             </div>
           </div>
           -->
+          
+          
+          <div class="col-md-2 revsort">
+            <div class="form-check">
+                <label class="form-check-label" for="sort-reverse">
+                  <input type="checkbox" id="sort-reverse" name="reverse" value="true" class="form-check-input" {revsel}>
+                  Reverse Sort
+                </label>
+            </div>
+          </div>
+          
+          
           <div class="col-md-2">
             <div class="input-group">
               <span class="input-group-addon" id="basic-addon1">
@@ -411,6 +461,8 @@ pub fn form(ops: &Page) -> String {
               </select>
             </div>
           </div>
+          
+          
           <div class="col-md-2">
               <div class="input-group">
                   <span class="input-group-addon" id="basic-addon1">
@@ -418,6 +470,7 @@ pub fn form(ops: &Page) -> String {
                   </span>
                   <select name="layout" id="Layout" class="custom-select" onchange="set_layout()" style="width: 100%">
                     <option {gridsel} value="Grid">Grid</option>
+                    <option {blocksel} value="Block">Block</option>
                     <option {doubletablesel} value="DoubleTable">Double List</option>
                     <option {tablesel} value="Table">List</option>
                   </select>
@@ -426,45 +479,8 @@ pub fn form(ops: &Page) -> String {
           <div class="col-md-1">
             <button type="submit" class="btn">Submit</button>
           </div>
-          <!--
-          <div class="col-md-2">
-            <div class="input-group">
-              <span class="input-group-addon" id="basic-addon1">
-                <i class="fa fa-table" aria-hidden="true"></i>
-              </span>
-              <select name="layout" id="Layout" class="custom-select" onchange="set_layout()" style="width: 100%">
-                <! - - <option selected value="Grid">Layout</option> - - >
-                <option {gridsel} value="Grid">Grid</option>
-                <option {doubletablesel} value="DoubleTable">Double List</option>
-                <option {tablesel} value="Table">List</option>
-              </select>
-            </div>
-            <div class="">
-            <div class="row">
-              <! - - 
-              <div class="col col-lg-5">
-                <button type="button" class="btn">
-                  <i class="fa fa-refresh" aria-hidden="true"></i>
-                </button>&nbsp;
-              </div>
-              <div class="col-md-auto">
-              </div>
-              <div class="col col-lg-5">
-              
-              </div>
-              <div class="col">
-              <div class="col col-lg-1">
-              </div>
-              <div class="col-md-auto">
-              </div>
-              - - >
-              <div class="col col-lg-5">
-                <button type="submit" class="btn">Submit</button>
-              </div>
-            </div>
-            </div>
-          -->
-          </div>
+          
+          
         </div>
         <input type="hidden" name="persistence" value="">
       </form>
@@ -473,6 +489,8 @@ pub fn form(ops: &Page) -> String {
 "###, 
         hslsel=selhsl, hlssel=selhls, lshsel=sellsh, lhssel=sellhs, slhsel=selslh, shlsel=selshl,
         gridsel=selgrid, tablesel=seltable, doubletablesel=seldoubletable
+        , blocksel=selblock
+        , revsel=selrev
         // ,opts=ops
     )
       // after <br>, before <div class="v-collection">
