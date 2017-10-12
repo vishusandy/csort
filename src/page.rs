@@ -218,7 +218,8 @@ impl FromData for Page {
             },
         }
         let fdata = str::from_utf8(&dat).unwrap_or("");
-        println!("{:?}", fdata);
+        // print form data
+        // println!("{:?}", fdata);
         let mut sort = DEFAULT_SORT;
         let mut layout = DEFAULT_LAYOUT;
         let mut add = None;
@@ -284,7 +285,7 @@ impl FromData for Page {
                     "adds" => {
                         let de = URI::percent_decode(val.as_bytes());
                         let dstr: String = match de {
-                            Ok(d2) => d2.to_string().replace("+", " "),
+                            Ok(d2) => d2.to_string().replace("+", " ").trim().to_string(),
                             _ => "".to_string(),
                         };
                         println!("Decoded string:\n{}", dstr);
@@ -306,7 +307,13 @@ impl FromData for Page {
                                 _ => {},
                             }*/
                             if dstr != "" {
-                                let t = ColorHsl::read_json_str(&dstr);
+                                let t = if dstr.ends_with(",") {
+                                    ColorHsl::read_json_str(&dstr[dstr.len()-1..dstr.len()])
+                                } else {
+                                    ColorHsl::read_json_str(&dstr)
+                                };
+                                
+                                
                                 adds = match t.len() {
                                     0 => None,
                                     l => {
@@ -325,6 +332,13 @@ impl FromData for Page {
                             let mut alist: Vec<ColorHsl> = Vec::new();
                             for col in dstr.split(',') {
                                 let co = col.trim();
+                                let co2 = if co.ends_with(",") {
+                                    &co[co.len()-1..co.len()]
+                                } else {
+                                    co
+                                };
+                                if co == "" { continue; }
+                                
                                 match ColorHsl::from_hex(co, co) {
                                     Some(c) => alist.push(c),
                                     _ => {},
@@ -388,13 +402,56 @@ pub fn form(ops: &Page) -> String {
     let selblock = match ops.layout { Layout::Block => "selected", _ => "" };
     
     format!(r###"
-      <form method="post" name="colrform" action="http://localhost:8000/" class="sticky-top" onsubmit="persist()">
-        <div class="row v-form">
+      
+      <!-- Modal -->
+      <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <!-- <form method="post" name="upldform" class="" enctype="multipart/form-data" action="http://localhost:8000/upload" > -->
+          <form method="post" name="upldform" class="" enctype="multipart/form-data" action="http://localhost:8000/upload" >
           
-          <div class="col-md-4">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="uploadModalLabel">Search File For Colors</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              
+                <label class="custom-file">
+                  <input type="file" name="colr_upld" class="" multiple>
+                  <!-- 
+                  <input type="file" name="colr_upld" id="upload-file" class="custom-file-input">
+                  <span class="custom-file-control"></span>
+                  -->
+                </label>
+              
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Upload</button>
+              <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+            </div>
+          </div>
+          
+          </form>
+        </div>
+      </div>
+
+      
+      <div class="sticky-top">
+      
+      <form method="post" name="colrform" action="http://localhost:8000/" class="" onsubmit="persist()">
+          <div class="row v-form">
+            <div class="col-md-2">
+              <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadModal">
+              Upload Colors
+            </button>
+          </div>
+          <div class="col-md-3">
             <!-- <input type="text" class="form-control" placeholder=""> -->
             <div class="input-group">
-              <div class="input-group">
                 <!--
                 <input type="text" name="add" class="form-control" placeholder="Add Color" aria-label="Add Color">
                 <span class="input-group-btn">
@@ -416,8 +473,9 @@ pub fn form(ops: &Page) -> String {
                   </span>
                 <!-- </span> -->
                 
-              </div>
+                
             </div>
+            
           </div>
           <!--
           <div class="col">
@@ -435,11 +493,11 @@ pub fn form(ops: &Page) -> String {
           -->
           
           
-          <div class="col-md-2 revsort">
+          <div class="col-md-1 revsort">
             <div class="form-check">
                 <label class="form-check-label" for="sort-reverse">
                   <input type="checkbox" id="sort-reverse" name="reverse" value="true" class="form-check-input" {revsel}>
-                  Reverse Sort
+                  Reverse
                 </label>
             </div>
           </div>
@@ -484,7 +542,11 @@ pub fn form(ops: &Page) -> String {
         </div>
         <input type="hidden" name="persistence" value="">
       </form>
+      </div>
       <br>
+      
+
+      
       <div class="v-collection">
 "###, 
         hslsel=selhsl, hlssel=selhls, lshsel=sellsh, lhssel=sellhs, slhsel=selslh, shlsel=selshl,

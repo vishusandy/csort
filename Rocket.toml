@@ -1,7 +1,7 @@
 [development]
 address = "localhost"
 port = 8000
-limits = { forms = 4194304 }
+limits = { forms = 134217728 }
 
 [staging]
 address = "localhost"
